@@ -1,0 +1,93 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  DRIVER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  phone     String?  @unique
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  driver   Driver?
+  orders   Order[]
+  messages Message[]
+  earnings Earning[]
+}
+
+model Driver {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  licenseNo    String   @unique
+  vehiclePlate String   @unique
+  isOnline     Boolean  @default(false)
+  locationLat  Float?
+  locationLng  Float?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders   Order[]
+  earnings Earning[]
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  driverId  String?
+  driver    Driver?     @relation(fields: [driverId], references: [id])
+  pickupLat Float
+  pickupLng Float
+  dropLat   Float
+  dropLng   Float
+  status    OrderStatus @default(PENDING)
+  fare      Float
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  earnings Earning?
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id])
+  roomId    String
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Earning {
+  id        String   @id @default(uuid())
+  driverId  String
+  driver    Driver   @relation(fields: [driverId], references: [id])
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id])
+  amount    Float
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+}
