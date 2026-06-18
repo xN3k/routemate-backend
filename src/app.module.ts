@@ -7,6 +7,7 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { configuration, validationSchema } from './config/configuration';
 import { UsersModule } from './modules/users/users.module';
 import { DriverModule } from './driver/driver.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 
 @Module({
@@ -19,7 +20,8 @@ import { DriverModule } from './driver/driver.module';
     PrismaModule,
     AuthModule,
     UsersModule,
-    DriverModule],
+    DriverModule,
+    OrdersModule],
   controllers: [AppController],
   providers: [AppService],
 })
