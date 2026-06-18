@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '../prisma/prisma.module';
 import { configuration, validationSchema } from './config/configuration';
 import { UsersModule } from './modules/users/users.module';
+import { DriverModule } from './driver/driver.module';
+
 
 @Module({
   imports: [
@@ -16,7 +18,8 @@ import { UsersModule } from './modules/users/users.module';
     }),
     PrismaModule,
     AuthModule,
-    UsersModule],
+    UsersModule,
+    DriverModule],
   controllers: [AppController],
   providers: [AppService],
 })
