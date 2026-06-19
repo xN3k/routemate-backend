@@ -35,6 +35,16 @@ export class AuthService {
         return this.issueTokens(user.id, user.email, user.role);
     }
 
+    decodeToken(token: string): { sub: string; email: string; role: string } {
+        try {
+            return this.jwt.verify(token, {
+                secret: this.config.get<string>('jwt.refreshSecret'),
+            });
+        } catch {
+            throw new UnauthorizedException('Invalid or expired refresh token');
+        }
+    }
+
     async refreshToken(userId: string, incomingToken: string) {
         const hashedIncomingToken = crypto.createHash('sha256').update(incomingToken).digest('hex');
         const storedToken = await this.prisma.refreshToken.findFirst({
