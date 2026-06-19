@@ -8,6 +8,9 @@ import { configuration, validationSchema } from './config/configuration';
 import { UsersModule } from './modules/users/users.module';
 import { DriverModule } from './modules/driver/driver.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { TrackingGateway } from './modules/tracking/tracking.gateway';
+import { TrackingModule } from './modules/tracking/tracking.module';
+import { DispatchModule } from './modules/dispatch/dispatch.module';
 
 
 @Module({
@@ -21,8 +24,10 @@ import { OrdersModule } from './modules/orders/orders.module';
     AuthModule,
     UsersModule,
     DriverModule,
-    OrdersModule],
+    OrdersModule,
+    TrackingModule,
+    DispatchModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TrackingGateway],
 })
 export class AppModule { }
