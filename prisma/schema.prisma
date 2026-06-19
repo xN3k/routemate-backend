@@ -31,10 +31,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  driver   Driver?
-  orders   Order[]
-  messages Message[]
-  earnings Earning[]
+  driver        Driver?
+  orders        Order[]
+  messages      Message[]
+  earnings      Earning[]
+  refreshTokens RefreshToken[]
 }
 
 model Driver {
@@ -90,4 +91,14 @@ model Earning {
   createdAt DateTime @default(now())
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
