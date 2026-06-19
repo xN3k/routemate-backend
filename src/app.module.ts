@@ -14,6 +14,7 @@ import { DispatchModule } from './modules/dispatch/dispatch.module';
 import { ChatGateway } from './modules/chat/chat.gateway';
 import { ChatService } from './modules/chat/chat.service';
 import { ChatModule } from './modules/chat/chat.module';
+import { EarningsModule } from './modules/earnings/earnings.module';
 
 
 @Module({
@@ -30,7 +31,8 @@ import { ChatModule } from './modules/chat/chat.module';
     OrdersModule,
     TrackingModule,
     DispatchModule,
-    ChatModule],
+    ChatModule,
+    EarningsModule],
   controllers: [AppController],
   providers: [AppService, TrackingGateway, ChatGateway, ChatService],
 })
