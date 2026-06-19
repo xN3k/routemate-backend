@@ -11,6 +11,9 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { TrackingGateway } from './modules/tracking/tracking.gateway';
 import { TrackingModule } from './modules/tracking/tracking.module';
 import { DispatchModule } from './modules/dispatch/dispatch.module';
+import { ChatGateway } from './modules/chat/chat.gateway';
+import { ChatService } from './modules/chat/chat.service';
+import { ChatModule } from './modules/chat/chat.module';
 
 
 @Module({
@@ -26,8 +29,9 @@ import { DispatchModule } from './modules/dispatch/dispatch.module';
     DriverModule,
     OrdersModule,
     TrackingModule,
-    DispatchModule],
+    DispatchModule,
+    ChatModule],
   controllers: [AppController],
-  providers: [AppService, TrackingGateway],
+  providers: [AppService, TrackingGateway, ChatGateway, ChatService],
 })
 export class AppModule { }
