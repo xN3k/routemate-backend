@@ -52,7 +52,8 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
     ChatModule,
     EarningsModule],
   controllers: [AppController],
-  providers: [{ provide: APP_FILTER, useClass: HttpExceptionFilter },
+  providers: [AppService,
+  { provide: APP_FILTER, useClass: HttpExceptionFilter },
   { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
   { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
   {
