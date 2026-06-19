@@ -14,14 +14,14 @@ export class AuthController {
     async register(@Body() dto: RegisterDto, @Res({ passthrough: true }) res: Response) {
         const tokens = await this.auth.register(dto);
         this.setRefreshTokenCookie(res, tokens.refreshToken);
-        return { accessToken: tokens.accessToken, user: tokens.user };
+        return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken, user: tokens.user };
     }
 
     @Post('login')
     async login(@Body() dto: LoginDto, @Res({ passthrough: true }) res: Response) {
         const tokens = await this.auth.login(dto);
         this.setRefreshTokenCookie(res, tokens.refreshToken);
-        return { accessToken: tokens.accessToken, user: tokens.user };
+        return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken, user: tokens.user };
     }
 
     @Post('refresh')
@@ -29,12 +29,11 @@ export class AuthController {
         const refreshToken = req.cookies['refresh_token'];
         if (!refreshToken) throw new UnauthorizedException('No refresh token provided');
 
-
-        const decoded = this.auth.decodeToken(refreshToken); // Add this method in service
+        const decoded = this.auth.decodeToken(refreshToken);
 
         const tokens = await this.auth.refreshToken(decoded.sub, refreshToken);
         this.setRefreshTokenCookie(res, tokens.refreshToken);
-        return { accessToken: tokens.accessToken, user: tokens.user };
+        return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken, user: tokens.user };
     }
 
     @UseGuards(JwtAuthGuard)

@@ -11,6 +11,8 @@ Authorization: Bearer <access_token>
 
 ## Authentication
 
+> The refresh token is stored as an **HttpOnly cookie** (`refresh_token`, 7-day expiry). You do not need to send it manually — the browser/client handles it automatically.
+
 ### POST /auth/register
 Register a new user.
 
@@ -21,16 +23,18 @@ Register a new user.
   "password": "password123",
   "name": "John Doe",
   "phone": "+1234567890",
-  "role": "CUSTOMER" // CUSTOMER | DRIVER | ADMIN
+  "role": "USER" // USER | DRIVER | ADMIN
 }
 ```
 
 **Response** `201`
 ```json
 {
-  "accessToken": "<jwt_token>"
+  "accessToken": "<jwt_token>",
+  "user": { "id": "uuid", "email": "user@example.com", "role": "USER" }
 }
 ```
+Sets `refresh_token` cookie.
 
 ---
 
@@ -48,8 +52,38 @@ Login and receive an access token.
 **Response** `200`
 ```json
 {
-  "accessToken": "<jwt_token>"
+  "accessToken": "<jwt_token>",
+  "user": { "id": "uuid", "email": "user@example.com", "role": "USER" }
 }
+```
+Sets `refresh_token` cookie.
+
+---
+
+### POST /auth/refresh
+Rotate the refresh token and get a new access token.
+
+> Reads `refresh_token` from cookie automatically. No request body needed.
+
+**Response** `200`
+```json
+{
+  "accessToken": "<new_jwt_token>",
+  "user": { "id": "uuid", "email": "user@example.com", "role": "USER" }
+}
+```
+Sets a new `refresh_token` cookie.
+
+---
+
+### POST /auth/logout
+> Requires: `JWT`
+
+Revoke the current refresh token and clear the cookie.
+
+**Response** `200`
+```json
+{ "success": true }
 ```
 
 ---
