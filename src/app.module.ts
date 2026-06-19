@@ -6,7 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '../prisma/prisma.module';
 import { configuration, validationSchema } from './config/configuration';
 import { UsersModule } from './modules/users/users.module';
-import { DriverModule } from './driver/driver.module';
+import { DriverModule } from './modules/driver/driver.module';
 import { OrdersModule } from './modules/orders/orders.module';
 
 
